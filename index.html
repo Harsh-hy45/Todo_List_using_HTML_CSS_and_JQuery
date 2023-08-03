@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO List</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h2>Add your Task here:</h2>
+        <form id="new-task-form">
+            <input type="text" name="task-title" id="task-title" placeholder="What are your plans?" />
+            <textarea name="task-description" id="task-description" cols="30" rows="3" placeholder="Task Description"></textarea>
+            <label for="complete-by-date">Complete By Date:</label>
+            <input type="date" name="complete-by-date" id="complete-by-date" />
+            <input type="submit" id="new-task-submit" value="Add task" />
+        </form>
+    </header>
+    <main>
+        <section class="task-list">
+            <h1>Your Tasks</h1>
+            <div id="tasks">
+                <!-- Task items will be added here dynamically using jQuery -->
+            </div>
+        </section>
+    </main>
+    <script src="js/code.jquery.com_jquery-3.7.0.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

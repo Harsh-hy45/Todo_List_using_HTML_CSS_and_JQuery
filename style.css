@@ -1,0 +1,199 @@
+:root {
+  --dark: #374152;
+  --darker: #1f2931;
+  --darkest: #111827;
+  --grey: #6b7280;
+  --pink: #ec4899;
+  --purple: #8b5cf6;
+  --light: #eee;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  color: #fff;
+  background-color: var(--dark);
+  justify-content: space-around;
+}
+
+header {
+  padding: 2rem 1rem;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+header h2 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--grey);
+  margin-bottom: 1rem;
+}
+
+input,
+button {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+#new-task-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: var(--darker);
+  border-radius: 1rem;
+}
+
+#new-task-form label {
+  font-size: 1rem;
+  color: var(--grey);
+  margin-bottom: 0.5rem;
+}
+
+#new-task-form input[type="text"],
+#new-task-form input[type="date"],
+#new-task-form textarea,
+#new-task-form input[type="datetime-local"] {
+  background-color: var(--darkest);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--darker);
+  color: var(--light);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+
+  /* New styles for the title, description, and date inputs */
+  font-family: "Fira sans", sans-serif;
+  color: var(--light);
+}
+
+#new-task-form input[type="text"]::placeholder,
+#new-task-form textarea::placeholder,
+#new-task-form input[type="datetime-local"]::placeholder {
+  color: var(--dark);
+}
+
+#new-task-form input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 2px;
+  opacity: 0.6;
+  filter: invert(0.8);
+}
+
+#new-task-form input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+#new-task-form #new-task-submit {
+  padding: 0.75rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background-image: linear-gradient(to right, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  cursor: pointer;
+  transition: 0.4s;
+  border-radius: 0.5rem;
+}
+
+#new-task-form #new-task-submit:hover {
+  opacity: 0.8;
+}
+
+#new-task-form #new-task-submit:active {
+  opacity: 0.6;
+}
+
+main {
+  flex: 1 1 0%;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+section h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--grey);
+  margin-bottom: 1rem;
+}
+
+.task-list {
+  border-top: 1px solid var(--light);
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+#tasks .task {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--darkest);
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.task .content .text {
+  color: var(--light);
+  font-size: 1.125rem;
+  width: 100%;
+  display: block;
+  transition: 0.4s;
+}
+
+.task .content .text:not(:read-only) {
+  color: var(--pink);
+}
+
+.task .actions {
+  display: flex;
+  margin-top: 10px;
+}
+
+.task .actions button {
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.4s;
+}
+
+.task .actions button.edit,
+.task .actions button.save {
+  background-image: linear-gradient(to right, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  color: var(--light);
+}
+
+.task .actions button.delete {
+  color: crimson;
+}
+
+.task-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--light);
+}
+/* .task-title.not-editing {
+  font-family: "Fira sans", sans-serif;
+  color: var(--light);
+} */
+
+.edit-title
+{
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--light);
+}
