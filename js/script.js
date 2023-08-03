@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
     const form = $("#new-task-form");
     const inputTitle = $("#task-title");
     const inputDescription = $("#task-description");
@@ -11,12 +12,24 @@ $(document).ready(function () {
         const title = inputTitle.val();
         const description = inputDescription.val();
         const completeByDate = inputCompleteByDate.val();
-        addTask(title, description, completeByDate);
-        tasks.push({
-            title,
-            description,
-            completeByDate
-        });
+        
+        // Check if we are editing an existing task
+        if (form.data("edit-index") !== undefined) {
+            form.find("#new-task-submit").val("Save Task").prop("disabled", false)
+            const editIndex = form.data("edit-index");
+            updateTask(editIndex, title, description, completeByDate);
+            form.data("edit-index", undefined); // Reset edit-index
+            form.find("#new-task-submit").val("Add Task").prop("disabled", false); // Change button text back to "Add Task"
+            form.find(".edit").show(); // Show the "Edit" button again
+        } else {
+            addTask(title, description, completeByDate);
+            tasks.push({
+                title,
+                description,
+                completeByDate
+            });
+        }
+        
         updateLocalStorageTasks();
         inputTitle.val("");
         inputDescription.val("");
@@ -33,7 +46,6 @@ $(document).ready(function () {
         task_element.append(task_content_element);
 
         const task_title_element = $("<h3>").text(title).addClass("task-title not-editing");
-
         task_content_element.append(task_title_element);
 
         if (description.trim() !== "") {
@@ -48,55 +60,22 @@ $(document).ready(function () {
 
         const task_actions_el = $("<div>").addClass("actions");
         const task_edit_el = $("<button>").addClass("edit").text("Edit");
-        const task_save_el = $("<button>").addClass("save").text("Save").hide();
         const task_delete_el = $("<button>").addClass("delete").text("Delete");
 
-        task_actions_el.append(task_edit_el, task_save_el, task_delete_el);
+        task_actions_el.append(task_edit_el, task_delete_el);
         task_element.append(task_actions_el);
         list_element.append(task_element);
 
         task_edit_el.click(function () {
-            task_edit_el.hide();
-            task_save_el.show();
-
-            const originalTitle = title; // Store the original title before editing
-            const originalDescription = description;
-            const originalCompleteByDate = completeByDate;
-
-            const editTitleInput = $('<input>').attr('type', 'text').addClass('edit-title').val(title);
-            const editDescriptionTextarea = $("<textarea>").addClass("edit-description").val(description);
-            const editCompleteByInput = $("<input>").addClass("edit-complete-by").attr('type', 'datetime-local').val(completeByDate);
-
-            task_title_element.replaceWith(editTitleInput);
-            task_description_el.replaceWith(editDescriptionTextarea);
-            task_complete_by_el.replaceWith(editCompleteByInput);
-
-            editTitleInput.focus();
-        });
-
-        task_save_el.click(function () {
-            task_save_el.hide();
-            task_edit_el.show();
-
-            const newTitle = $('.edit-title').val();
-            const newDescription = $('.edit-description').val();
-            const newCompleteByDate = $('.edit-complete-by').val();
-
-            task_title_element.text(newTitle).addClass("task-title not-editing");
-
-            if (newDescription.trim() !== "") {
-                const task_updated_description_el = $("<p>").text(newDescription);
-                task_description_el.replaceWith(task_updated_description_el);
-            }
-
-            if (newCompleteByDate.trim() !== "") {
-                const task_updated_complete_by_el = $("<p>").text("Complete by: " + newCompleteByDate);
-                task_complete_by_el.replaceWith(task_updated_complete_by_el);
-            }
-
             const taskIndex = $(this).closest(".task").index();
-            tasks[taskIndex] = { title: newTitle, description: newDescription, completeByDate: newCompleteByDate };
-            updateLocalStorageTasks();
+            const taskToEdit = tasks[taskIndex];
+
+            inputTitle.val(taskToEdit.title);
+            inputDescription.val(taskToEdit.description);
+            inputCompleteByDate.val(taskToEdit.completeByDate);
+
+            form.data("edit-index", taskIndex); // Store the edit index to update the task later
+            task_edit_el.hide();
         });
 
         task_delete_el.click(function () {
@@ -105,6 +84,20 @@ $(document).ready(function () {
             tasks.splice(taskIndex, 1);
             updateLocalStorageTasks();
         });
+    }
+
+    function updateTask(index, title, description, completeByDate) {
+        const taskToEdit = tasks[index];
+        taskToEdit.title = title;
+        taskToEdit.description = description;
+        taskToEdit.completeByDate = completeByDate;
+
+        const task_element = list_element.children().eq(index);
+        const task_content_element = task_element.find(".content");
+
+        task_content_element.find(".task-title").text(title);
+        task_content_element.find("p:eq(0)").text(description ? description : "");
+        task_content_element.find("p:eq(1)").text(completeByDate ? "Complete by: " + completeByDate : "");
     }
 
     function updateLocalStorageTasks() {
