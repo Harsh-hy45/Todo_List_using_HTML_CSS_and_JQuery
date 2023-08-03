@@ -186,10 +186,6 @@ section h1 {
   font-weight: 500;
   color: var(--light);
 }
-/* .task-title.not-editing {
-  font-family: "Fira sans", sans-serif;
-  color: var(--light);
-} */
 
 .edit-title
 {
