@@ -6,21 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TODO List</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
-    <header>
-        <h2>Add your Task here:</h2>
-        <form id="new-task-form">
-            <input type="text" name="task-title" id="task-title" placeholder="What are your plans?" />
-            <textarea name="task-description" id="task-description" cols="30" rows="3" placeholder="Task Description"></textarea>
-            <label for="complete-by-date">Complete By Date:</label>
-            <input type="date" name="complete-by-date" id="complete-by-date" />
-            <input type="submit" id="new-task-submit" value="Add task" />
-        </form>
+    <header> 
+        <div class="header-content">
+            <h2>
+                Add your Task 
+                <span class="add-task-icon" id="open-modal-button">
+                   <i class="fa fa-plus"></i>
+                </span> 
+            </h2>
+            
+           </div>
+        <div id="task-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-modal-button">&times;</span>
+                <form id="new-task-form">
+                    <input type="text" name="task-title" id="task-title" placeholder="What are your plans?" />
+                    <textarea name="task-description" id="task-description" cols="30" rows="3" placeholder="Task Description"></textarea>
+                    <label for="complete-by-date">Complete By Date:</label>
+                    <input type="date" name="complete-by-date" id="complete-by-date" />
+                    <input type="submit" id="new-task-submit" value="Add task" />
+                </form>
+            </div>
+        </div>
+
     </header>
     <main>
         <section class="task-list">
-            <h1>Your Tasks</h1>
+            <h3>Your Tasks</h3>
             <div id="tasks">
                 <!-- Task items will be added here dynamically using jQuery -->
             </div>
