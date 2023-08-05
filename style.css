@@ -6,8 +6,8 @@
   --pink: #ec4899;
   --purple: #8b5cf6;
   --light: #eee;
-  --button:#535c6d;
-  --button-hover:#a6afc2;
+  --button: #535c6d;
+  --button-hover: #a6afc2;
 }
 
 body {
@@ -34,7 +34,7 @@ header {
 
 .header-content {
   display: flex;
-  align-items: center; 
+  align-items: center;
   font-size: 1.5rem;
   font-weight: 300;
   justify-content: center;
@@ -45,7 +45,7 @@ header {
   display: inline-block;
   width: 50px;
   height: 50px;
-  background-color: var(--button); 
+  background-color: var(--button);
   color: white;
   border-radius: 50%;
   text-align: center;
@@ -55,7 +55,7 @@ header {
 
 .add-task-icon:hover {
   background-color: var(--button-hover);
-  color: var(--light); 
+  color: var(--light);
 }
 
 .add-task-icon {
@@ -75,15 +75,15 @@ button {
 }
 
 .modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -91,9 +91,9 @@ button {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: fit-content; 
-  border-radius: 10px; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+  width: fit-content;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Close button for the modal */
@@ -109,6 +109,22 @@ button {
   color: red;
   text-decoration: none;
   cursor: pointer;
+}
+
+.delete,
+.cancel {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.delete:hover,
+.cancel:hover {
+  background-color: #d32f2f;
 }
 
 #new-task-form {
@@ -208,9 +224,10 @@ section h3 {
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  align-items: center; /* Center the content vertically */
-
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Add a subtle shadow */
+  align-items: center;
+  /* Center the content vertically */
 }
 
 .task .content .text {
@@ -292,13 +309,9 @@ section h3 {
   flex-grow: 1;
 }
 
-.edit-title
-{
+.edit-title {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--light);
 }
-
-
-
 
