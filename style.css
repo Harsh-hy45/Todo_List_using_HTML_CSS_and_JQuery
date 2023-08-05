@@ -32,45 +32,39 @@ header {
   margin-bottom: 20px;
 }
 
-/* Positioning the plus icon in the header */
 .header-content {
   display: flex;
-  align-items: center; /* Center the items vertically */
+  align-items: center; 
   font-size: 1.5rem;
   font-weight: 300;
   justify-content: center;
   color: var(--grey);
 }
-/* .header h2{
-  text-align: center;
-} */
+
 .add-task-icon {
   display: inline-block;
   width: 50px;
   height: 50px;
-  background-color: var(--button); /* Use purple as the background color */
-  color: white; /* Use light as the text color */
+  background-color: var(--button); 
+  color: white;
   border-radius: 50%;
   text-align: center;
-  line-height: 50px; /* Update this to match the height */
+  line-height: 50px;
   cursor: pointer;
 }
 
-/* Styling for the plus icon on hover */
 .add-task-icon:hover {
-  background-color: var(--button-hover); /* Use pink as the background color on hover */
-  color: var(--light); /* Use light as the text color on hover */
+  background-color: var(--button-hover);
+  color: var(--light); 
 }
 
 .add-task-icon {
   margin-left: 10px;
 }
 
-/* Remove the top margin from h2 element to align with the plus icon */
 .header-content h2 {
   margin-top: 0;
 }
-
 
 input,
 button {
@@ -78,6 +72,43 @@ button {
   border: none;
   outline: none;
   background: none;
+}
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+.modal-content {
+  background-color: var(--darker);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: fit-content; 
+  border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+}
+
+/* Close button for the modal */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 #new-task-form {
@@ -106,8 +137,6 @@ button {
   color: var(--light);
   font-size: 1rem;
   margin-bottom: 1rem;
-
-  /* New styles for the title, description, and date inputs */
   font-family: "Fira sans", sans-serif;
   color: var(--light);
 }
@@ -179,6 +208,9 @@ section h3 {
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  align-items: center; /* Center the content vertically */
+
 }
 
 .task .content .text {
@@ -200,11 +232,13 @@ section h3 {
 
 .task .actions button {
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 10px;
   font-size: 1.125rem;
   font-weight: 700;
   text-transform: uppercase;
   transition: 0.4s;
+  border-radius: 5px;
+  padding: 5px 10px;
 }
 
 .task .actions button.edit,
@@ -218,13 +252,44 @@ section h3 {
 }
 
 .task .actions button.delete {
-  color: crimson;
+  background-color: crimson;
+  color: white;
+}
+
+#task-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+#task-table th {
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 12px 8px;
+  text-align: left;
+}
+
+#task-table td {
+  padding: 12px 8px;
+}
+
+#task-table tr:nth-child(even) {
+  background-color: var(--darker);
+}
+
+#task-table tr {
+  border-bottom: 1px solid var(--darkest);
+}
+
+#task-table tr:last-child {
+  border-bottom: none;
 }
 
 .task-title {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--light);
+  flex-grow: 1;
 }
 
 .edit-title
@@ -234,39 +299,6 @@ section h3 {
   color: var(--light);
 }
 
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-}
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be modified to desired width */
-}
-
-/* Close button for the modal */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 
