@@ -93,6 +93,7 @@ button {
   border: 1px solid #888;
   width: fit-content;
   border-radius: 10px;
+
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -356,4 +357,13 @@ section h3 {
   margin-top: 5px;
   display: none;
   margin-bottom: 1rem;
+}
+
+.resizable-textarea {
+  resize: both;
+  overflow: auto;
+  min-height: var(--min-height, 50px);
+  max-height: var(--max-height, 50px);
+  min-width: var(--min-width, 250px);
+  max-width: var(--max-width, 300px);
 }
