@@ -111,9 +111,19 @@ button {
   cursor: pointer;
 }
 
-.delete,
-.cancel {
-  background-color: #f44336;
+.delete
+ {
+  background-color: #a13a33;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.cancel{
+  background-color: #4b4e53;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -176,8 +186,8 @@ button {
 }
 
 #new-task-form #new-task-submit {
-  padding: 0.75rem 1rem;
-  font-size: 1.25rem;
+  padding: 10px 15px;
+  font-size: 1rem;
   font-weight: 700;
   background-image: linear-gradient(to right, var(--pink), var(--purple));
   -webkit-background-clip: text;
@@ -185,16 +195,45 @@ button {
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
   cursor: pointer;
+  /* color: white; */
+  border: none;
   transition: 0.4s;
-  border-radius: 0.5rem;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin: 0 auto;
+  display: block;
 }
 
 #new-task-form #new-task-submit:hover {
   opacity: 0.8;
+  background-color: var(--button-hover);
 }
 
 #new-task-form #new-task-submit:active {
   opacity: 0.6;
+}
+
+#reset-form {
+  padding: 10px 15px;
+  font-size: 1rem;
+  width: 90px;
+  background-color: var(--button);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin: 0 auto;
+  display: block;
+}
+
+#reset-form:hover {
+  background-color: var(--button-hover);
+}
+
+#reset-form:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 main {
@@ -225,9 +264,7 @@ section h3 {
   border-radius: 5px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Add a subtle shadow */
   align-items: center;
-  /* Center the content vertically */
 }
 
 .task .content .text {

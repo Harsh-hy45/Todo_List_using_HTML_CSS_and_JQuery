@@ -3,23 +3,21 @@ const inputTitle = $("#task-title");
 const inputDescription = $("#task-description");
 const inputCompleteByDate = $("#complete-by-date");
 const taskList = $("#tasks");
+const submitButton=$("#new-task-submit");
 const openModelButton = $("#open-modal-button");
 const closeModelButton = $("#close-modal-button");
+const deleteModal=$("#delete-modal");
 
 let tasks;
-
-
 let taskToDeleteIndex;
 
-// Open the delete modal when the delete button is clicked
 function openDeleteModal(index) {
   taskToDeleteIndex = index;
-  $("#delete-modal").css("display", "block");
+  deleteModal.css("display", "block");
 }
 
-// Close the delete modal
 function closeDeleteModal() {
-  $("#delete-modal").css("display", "none");
+ deleteModal.css("display", "none");
 }
 
 $(document).ready(function () {
@@ -28,10 +26,20 @@ $(document).ready(function () {
         tasks = [];
     }
     openModelButton.click(function () {
+        form.trigger("reset");
+        form.data("edit-index", undefined);
+        submitButton.val("Add Task");
         $("#task-modal").css("display", "block");
     });
+
     closeModelButton.click(function () {
+        form.trigger("reset");
+        form.data("edit-index", undefined);
         $("#task-modal").css("display", "none");
+    });
+
+    $("#reset-form").click(function () {
+         form.trigger("reset");
     });
 
     form.submit(function (e) {
@@ -43,13 +51,12 @@ $(document).ready(function () {
         if (!formIsValid) {
             return;
         }
-        if (form.data("edit-index") !== undefined) {
-            $(".edit").show();
-            $("#new-task-submit").val("Add Task");
-            const editIndex = form.data("edit-index");
+        if (form.data("edit-index") !== undefined) {   
+                 
             updateTask(editIndex, title, description, completeByDate);
             form.data("edit-index", undefined);
-            form.find(".edit").show();
+            submitButton.val("Add Task");
+            $("#task-modal").css("display", "none");
         }
         else {
             addTask(title, description, completeByDate);
@@ -68,7 +75,7 @@ $(document).ready(function () {
         $("#task-modal").css("display", "none");
     });
 
-    $("#new-task-submit").click(function () {
+    submitButton.click(function () {
         $("#task-modal").css("display", "none");
     });
 
@@ -100,6 +107,7 @@ function addTask(title, description, completeByDate) {
     $("#task-table tbody").append(taskRow);
     const taskEditButton = $("#task-table tbody tr:last-child .edit");
     const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
+    
     taskEditButton.click(function () {
         const taskIndex = $(this).closest('.task').index();
         const taskToEdit = tasks[taskIndex];
@@ -107,8 +115,8 @@ function addTask(title, description, completeByDate) {
         inputDescription.val(taskToEdit.description);
         inputCompleteByDate.val(taskToEdit.completeByDate);
         form.data('edit-index', taskIndex);
-        taskEditButton.hide();
-        $('#new-task-submit').val('Save Task');
+        submitButton.val('Save Task');
+        $("#task-modal").css("display", "block");
     });
 
     taskDeleteButton.click(function () {
@@ -117,19 +125,18 @@ function addTask(title, description, completeByDate) {
     });
 }
 
-$("#confirm-delete").click(function () {
-    // Delete the task after confirmation
+$("#confirm-delete").click(function () 
+  {
     tasks.splice(taskToDeleteIndex, 1);
     updateLocalStorageTasks();
     $(".task").eq(taskToDeleteIndex).remove();
     closeDeleteModal();
   });
 
-  // Add event listener for the cancel delete button in the modal
   $("#cancel-delete").click(function () {
-    // Close the delete modal without deleting the task
     closeDeleteModal();
   });
+
 
 function updateTask(index, title, description, completeByDate) {
     const taskToEdit = tasks[index];
