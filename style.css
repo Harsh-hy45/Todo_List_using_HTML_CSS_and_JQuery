@@ -164,7 +164,6 @@ button {
   font-size: 1rem;
   margin-bottom: 1rem;
   font-family: "Fira sans", sans-serif;
-  color: var(--light);
 }
 
 #new-task-form input[type="text"]::placeholder,
@@ -195,7 +194,6 @@ button {
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
   cursor: pointer;
-  /* color: white; */
   border: none;
   transition: 0.4s;
   border-radius: 4px;
@@ -352,3 +350,10 @@ section h3 {
   color: var(--light);
 }
 
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+  margin-bottom: 1rem;
+}

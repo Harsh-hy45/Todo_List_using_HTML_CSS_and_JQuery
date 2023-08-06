@@ -23,9 +23,12 @@
                 <span class="close" id="close-modal-button">&times;</span>
                 <form id="new-task-form">
                     <input type="text" name="task-title" id="task-title" placeholder="What are your plans?" />
+                    <span id="task-title-error" class="error-message"></span>
                     <textarea name="task-description" id="task-description" cols="30" rows="3" placeholder="Task Description"></textarea>
+                    <span id="task-description-error" class="error-message"></span>
                     <label for="complete-by-date">Complete By Date:</label>
                     <input type="date" name="complete-by-date" id="complete-by-date" />
+                    <span id="complete-by-date-error" class="error-message"></span>
                     <input type="submit" id="new-task-submit" value="Add task" />
                     <input type="reset" id="reset-form" value="Clear" />
                     <div id="form-validation-errors"></div>
