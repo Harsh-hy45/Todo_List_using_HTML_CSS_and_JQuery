@@ -75,24 +75,8 @@ function updateLocalStorageTasks() {
     console.log(editingMode);
 }
 
-function validateForm(title, description, completeByDate) {
-    return validateTitle(title) && validateDescription(description) && validateCompleteBy(completeByDate);
-}
-
-
-function validateTitle(title) {
-    return title.length >= 3 && title.length <= 50;
-}
-
-function validateDescription(description) {
-    return description.length <= 200;
-}
-
-function validateCompleteBy(completeByDate) {
-    return !!completeByDate;
-}
-
 $(document).ready(function () {
+
     tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     if (!Array.isArray(tasks)) {
         tasks = [];
@@ -110,33 +94,6 @@ $(document).ready(function () {
         errorElement.hide();
     }
     
-    inputTitle.on('input', function () {
-        const title = inputTitle.val();
-        if (!validateTitle(title)) {
-            showError(inputTitle, "Title should be between 3 and 50 characters.");
-        } else {
-            hideError(inputTitle);
-        }
-    });
-
-    inputDescription.on('input', function () {
-        const description = inputDescription.val();
-        if (!validateDescription(description)) {
-            showError(inputDescription, "Description should not exceed 200 characters.");
-        } else {
-            hideError(inputDescription);
-        }
-    });
-
-    inputCompleteByDate.on('input', function () {
-        const completeByDate = inputCompleteByDate.val();
-        if (!validateCompleteBy(completeByDate)) {
-            showError(inputCompleteByDate, "Complete by date is required.");
-        } else {
-            hideError(inputCompleteByDate);
-        }
-    });
-
     openModelButton.click(function () {
         form.trigger("reset");
         editingMode = "add"; 
@@ -171,24 +128,6 @@ $(document).ready(function () {
         const title = inputTitle.val();
         const description = inputDescription.val();
         const completeByDate = inputCompleteByDate.val();
-        let formIsValid = validateForm(title, description, completeByDate);
-
-        if (validateForm(title, description, completeByDate)) {
-            closeModal();
-        }
-        else 
-        {
-            resetFormErrors();
-            if (!validateTitle(title)) {
-                showError(inputTitle, "Title should be between 3 and 50 characters.");
-            }
-            if (!validateDescription(description)) {
-                showError(inputDescription, "Description should not exceed 200 characters.");
-            }
-            if (!validateCompleteBy(completeByDate)) {
-                showError(inputCompleteByDate, "Complete by date is required.");
-            }
-        }
 
         if (editingMode === "edit") {
             const editIndex = form.data("edit-index");
@@ -212,10 +151,6 @@ $(document).ready(function () {
         inputTitle.val("");
         inputDescription.val("");
         inputCompleteByDate.val("");
-        // if(validateForm(title, description, completeByDate))
-        // {
-        //     $("#task-modal").css("display", "none");
-        // }
     });
 
     submitButton.click(function () {
