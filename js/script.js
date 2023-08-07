@@ -9,6 +9,7 @@ const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
 let tasks;
 let taskToDeleteIndex;
+let editingMode = "add";
 let taskCounter = 1;
 
 function openDeleteModal(index) {
@@ -46,6 +47,7 @@ function addTask(title, description, completeByDate) {
         inputDescription.val(taskToEdit.description);
         inputCompleteByDate.val(taskToEdit.completeByDate);
         form.data("edit-index", taskIndex);
+        editingMode = "edit"; 
         submitButton.val("Save Task");
         $("#task-modal").css("display", "block");
     });
@@ -70,7 +72,7 @@ function updateTask(index, title, description, completeByDate) {
 
 function updateLocalStorageTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    console.log(tasks);
+    console.log(editingMode);
 }
 
 function validateForm(title, description, completeByDate) {
@@ -137,14 +139,14 @@ $(document).ready(function () {
 
     openModelButton.click(function () {
         form.trigger("reset");
-        form.data("edit-index", undefined);
+        editingMode = "add"; 
         submitButton.val("Add Task");
         $("#task-modal").css("display", "block");
     });
 
     closeModelButton.click(function () {
         form.trigger("reset");
-        form.data("edit-index", undefined);
+        editingMode = "add"; 
         $("#task-modal").css("display", "none");
     });
 
@@ -160,7 +162,6 @@ $(document).ready(function () {
     
     function closeModal() {
         form.trigger("reset");
-        form.data("edit-index", undefined);
         $("#task-modal").css("display", "none");
     }
 
@@ -189,10 +190,11 @@ $(document).ready(function () {
             }
         }
 
-        if (form.data("edit-index") !== undefined) {
+        if (editingMode === "edit") {
             const editIndex = form.data("edit-index");
             updateTask(editIndex, title, description, completeByDate);
             form.data("edit-index", undefined);
+            editingMode = "add";
             submitButton.val("Add Task");
         } 
         else {
