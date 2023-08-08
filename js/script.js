@@ -8,7 +8,12 @@ const editButton = $(".edit");
 const openModelButton = $("#open-modal-button");
 const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
+const searchBar = $("#search-bar");
+const taskTitles = [];
 
+// const taskArray=$("#task-table tbody");
+
+let date = new Date();
 let tasks;
 let taskToDeleteIndex;
 let editingMode = "add";
@@ -26,7 +31,8 @@ function closeDeleteModal() {
 
 function viewTask(index) {
     const taskToView = tasks[index];
-    const taskDetailsUrl = `task-details.html?id=${taskToView.id}`;
+    console.log(index);
+    const taskDetailsUrl = `task-details.html?id=${index}`;
     window.location.href = taskDetailsUrl;
 }
 
@@ -35,28 +41,26 @@ function addTask(title, description, completeByDate) {
     <tr class="task">
       <td class="content">
         <input class="task-title" type="text" value="${title}" readonly>
-        <p>${description ? description : ""}</p>
-        <p>${completeByDate ? "Complete by: " + completeByDate : ""}</p>
-      </td>
+            </td>
       <td class="actions">
         <button class="view">View</button>
         <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
+        <button class="delete"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
       </td>
     </tr>
   `);
 
-    $("#task-table tbody").append(taskRow);
+    taskList.append(taskRow);
 
     const taskViewButton = $("#task-table tbody tr:last-child .view");
     const taskEditButton = $("#task-table tbody tr:last-child .edit");
     const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
-   
+
     taskViewButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
         viewTask(taskIndex);
     });
-    
+
     taskEditButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
         const taskToEdit = tasks[taskIndex];
@@ -64,13 +68,14 @@ function addTask(title, description, completeByDate) {
         inputDescription.val(taskToEdit.description);
         inputCompleteByDate.val(taskToEdit.completeByDate);
         form.data("edit-index", taskIndex);
-        editingMode = "edit"; 
+        editingMode = "edit";
         addButton.val("Save Task");
         $("#task-modal").css("display", "block");
     });
 
     taskDeleteButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
+
         openDeleteModal(taskIndex);
     });
 }
@@ -91,8 +96,13 @@ function updateLocalStorageTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     console.log(editingMode);
 }
+
 function validateForm(title, description, completeByDate) {
-    return validateTitle(title) && validateDescription(description) && validateCompleteBy(completeByDate);
+    if (validateTitle(title) && validateDescription(description) && validateCompleteBy(completeByDate)) {
+        // addButton.prop("disabled", false);
+        return true;
+    }
+    return false;
 }
 
 
@@ -110,16 +120,15 @@ function validateCompleteBy(completeByDate) {
 
 
 $(document).ready(function () {
-
     tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     if (!Array.isArray(tasks)) {
         tasks = [];
     }
-    
+
     openModelButton.click(function () {
         form.trigger("reset");
         resetFormErrors();
-        editingMode = "add"; 
+        editingMode = "add";
         addButton.prop("disabled", true);
         addButton.val("Add Task");
         $("#task-modal").css("display", "block");
@@ -127,7 +136,7 @@ $(document).ready(function () {
 
     closeModelButton.click(function () {
         form.trigger("reset");
-        editingMode = "add"; 
+        editingMode = "add";
         $("#task-modal").css("display", "none");
     });
 
@@ -147,19 +156,26 @@ $(document).ready(function () {
         errorElement.hide();
     }
 
+    Date.prototype.yyyymmdd = function () {
+        var yyyy = this.getFullYear().toString();
+        var mm = (this.getMonth() + 1).toString();
+        var dd = this.getDate().toString();
+        return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
+    };
+
     function resetFormErrors() {
         hideError(inputTitle);
         hideError(inputDescription);
         hideError(inputCompleteByDate);
     }
-    
+
     function closeModal() {
         form.trigger("reset");
         $("#task-modal").css("display", "none");
     }
 
     inputTitle.on('input', function () {
-        const title = inputTitle.val();
+        const title = inputTitle.val().trim();
         if (!validateTitle(title)) {
             showError(inputTitle, "Title should be between 3 and 50 characters.");
             addButton.prop("disabled", true);
@@ -170,7 +186,7 @@ $(document).ready(function () {
     });
 
     inputDescription.on('input', function () {
-        const description = inputDescription.val();
+        const description = inputDescription.val().trim();
         if (!validateDescription(description)) {
             showError(inputDescription, "Description should not exceed 200 characters.");
             addButton.prop("disabled", true);
@@ -182,7 +198,12 @@ $(document).ready(function () {
 
     inputCompleteByDate.on('input', function () {
         const completeByDate = inputCompleteByDate.val();
-        if (!validateCompleteBy(completeByDate)) {
+        currentDate = date.yyyymmdd();
+        if (completeByDate < currentDate) {
+            showError(inputCompleteByDate, "You can't add previous date.");
+            addButton.prop("disabled", true);
+        }
+        else if (!validateCompleteBy(completeByDate)) {
             showError(inputCompleteByDate, "Complete by date is required.");
             addButton.prop("disabled", true);
         } else {
@@ -191,13 +212,31 @@ $(document).ready(function () {
         }
     });
 
- 
+    for (const task of tasks) {
+        taskTitles.push(task.title);
+    }
+
+    searchBar.on("input", function () {
+        const searchTerm = searchBar.val().toLowerCase();
+        const filteredTasks = taskTitles.filter(taskTitle => taskTitle.toLowerCase().includes(searchTerm));
+        console.log(filteredTasks);
+        taskList.children().hide();
+       
+
+        filteredTasks.forEach(taskTitle => {
+            const taskRow=taskList.find('.task-title:contains("'+taskTitle+'")').closest('.task');
+            console.log(taskRow);
+            taskRow.show();
+        });
+    });
+
+
     form.submit(function (e) {
         e.preventDefault();
         const title = inputTitle.val();
         const description = inputDescription.val();
         const completeByDate = inputCompleteByDate.val();
-    
+
         if (validateForm(title, description, completeByDate)) {
             closeModal();
             if (editingMode === "edit") {
@@ -208,9 +247,7 @@ $(document).ready(function () {
                 addButton.val("Add Task");
             } else {
                 addTask(title, description, completeByDate);
-                const taskId = "task-" + taskCounter++;
                 tasks.push({
-                    id: taskId,
                     title,
                     description,
                     completeByDate,
@@ -221,7 +258,7 @@ $(document).ready(function () {
             inputDescription.val("");
             inputCompleteByDate.val("");
         } else {
-            
+
             if (!validateTitle(title)) {
                 showError(inputTitle, "Title should be between 3 and 50 characters.");
             }
@@ -252,5 +289,6 @@ $(document).ready(function () {
 
     for (const task of tasks) {
         addTask(task.title, task.description, task.completeByDate);
+        console.log("hello");
     }
 });

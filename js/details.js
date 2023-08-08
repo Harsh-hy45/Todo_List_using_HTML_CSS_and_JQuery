@@ -1,7 +1,14 @@
+function getTaskDetailsById(taskId)
+{
+    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    return tasks[taskId];
+}
+
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const taskId = urlParams.get('id');
-    const taskDetails = getTaskDetailsById(taskId);
+    console.log(taskId);
+     const taskDetails = getTaskDetailsById(taskId);
     const taskDetailsElement = $("#task-details");
 
     taskDetailsElement.html(`

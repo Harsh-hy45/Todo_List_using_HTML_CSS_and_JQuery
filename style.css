@@ -97,7 +97,6 @@ button {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Close button for the modal */
 .close {
   color: #aaa;
   float: right;
@@ -114,8 +113,8 @@ button {
 
 .delete
  {
-  background-color: #a13a33;
-  color: white;
+  color: #a13a33;
+  /* background-color: var(--button); */
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -135,7 +134,8 @@ button {
 
 .delete:hover,
 .cancel:hover {
-  background-color: #d32f2f;
+  background-color: var(--button-hover);
+  /* background-color: var(--button); */
 }
 
 #new-task-form {
@@ -295,7 +295,8 @@ section h3 {
 }
 
 .task .actions button.edit,
-.task .actions button.save {
+.task .actions button.view
+ {
   background-image: linear-gradient(to right, var(--pink), var(--purple));
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -304,7 +305,7 @@ section h3 {
   color: var(--light);
 }
 
-.task .actions button.delete {
+.delete-icon {
   background-color: crimson;
   color: white;
 }
