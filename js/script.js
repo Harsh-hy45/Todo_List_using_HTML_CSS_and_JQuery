@@ -218,15 +218,14 @@ $(document).ready(function () {
 
     searchBar.on("input", function () {
         const searchTerm = searchBar.val().toLowerCase();
-        const filteredTasks = taskTitles.filter(taskTitle => taskTitle.toLowerCase().includes(searchTerm));
-        console.log(filteredTasks);
-        taskList.children().hide();
+        taskList.find('.task').show();
        
 
-        filteredTasks.forEach(taskTitle => {
-            const taskRow=taskList.find('.task-title:contains("'+taskTitle+'")').closest('.task');
-            console.log(taskRow);
-            taskRow.show();
+        taskList.find('.task .content .task-title').each(function () {
+            const taskTitle = $(this).val().toLowerCase();
+            if (!taskTitle.includes(searchTerm)) {
+                $(this).closest('.task').hide();
+            }
         });
     });
 

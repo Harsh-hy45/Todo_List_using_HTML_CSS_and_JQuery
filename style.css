@@ -368,3 +368,32 @@ section h3 {
   min-width: var(--min-width, 250px);
   max-width: var(--max-width, 300px);
 }
+
+#search-bar {
+  background-color: var(--darker); 
+  border: 1px solid var(--darker);
+  color: var(--light);
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 15px;
+  padding-right: 30px; 
+}
+
+#search-bar::placeholder {
+  color: var(--grey);
+}
+
+#search-bar:focus {
+  outline: none;
+  border-color: var(--pink);
+}
+
+
+
+
+
+
+
+
