@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+    <link rel="stylesheet" href="details.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Details</h1>
+        <div id="task-details">
+            <div class="details-row">
+                <div class="details-column">Title:</div>
+                <div class="details-value" id="task-title"></div>
+            </div>
+            <div class="details-row">
+                <div class="details-column">Description:</div>
+                <div class="details-value" id="task-description"></div>
+            </div>
+            <div class="details-row">
+                <div class="details-column">Complete By:</div>
+                <div class="details-value" id="complete-by-date"></div>
+            </div>
+            <div class="details-row">
+                <div class="details-column">Created On:</div>
+                <div class="details-value">
+                    <span id="created-on-date"></span><span class="date-time-separator">&nbsp;&nbsp;</span> <span id="created-on-time"></span>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="details-column">Updated On:</div>
+                <div class="details-value">
+                    <span id="updated-on-date"></span><span class="date-time-separator">&nbsp;&nbsp;</span> <span id="updated-on-time"></span>
+                </div>
+            </div>
+            
+        </div>
+        <a href="index.html">Back to Tasks</a>
+    </div>
+    <script src="js/code.jquery.com_jquery-3.7.0.min.js"></script>
+    <script src="js/details.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ const taskTitles = [];
 
 // const taskArray=$("#task-table tbody");
 
-let date = new Date();
+let currentDate = new Date();
 let tasks;
 let taskToDeleteIndex;
 let editingMode = "add";
@@ -32,7 +32,7 @@ function closeDeleteModal() {
 function viewTask(index) {
     const taskToView = tasks[index];
     console.log(index);
-    const taskDetailsUrl = `task-details.html?id=${index}`;
+    const taskDetailsUrl = `details.html?id=${index}`;
     window.location.href = taskDetailsUrl;
 }
 
@@ -75,7 +75,6 @@ function addTask(title, description, completeByDate) {
 
     taskDeleteButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
-
         openDeleteModal(taskIndex);
     });
 }
@@ -85,6 +84,7 @@ function updateTask(index, title, description, completeByDate) {
     taskToEdit.title = title;
     taskToEdit.description = description;
     taskToEdit.completeByDate = completeByDate;
+    taskToEdit.updatedOn = new Date().toISOString();
     const taskRow = taskList.children().eq(index);
     const taskContentElement = taskRow.find(".content");
     taskContentElement.find(".task-title").val(title);
@@ -99,12 +99,10 @@ function updateLocalStorageTasks() {
 
 function validateForm(title, description, completeByDate) {
     if (validateTitle(title) && validateDescription(description) && validateCompleteBy(completeByDate)) {
-        // addButton.prop("disabled", false);
         return true;
     }
     return false;
 }
-
 
 function validateTitle(title) {
     return title.length >= 3 && title.length <= 50;
@@ -198,8 +196,8 @@ $(document).ready(function () {
 
     inputCompleteByDate.on('input', function () {
         const completeByDate = inputCompleteByDate.val();
-        currentDate = date.yyyymmdd();
-        if (completeByDate < currentDate) {
+        date = currentDate.yyyymmdd();
+        if (completeByDate < date) {
             showError(inputCompleteByDate, "You can't add previous date.");
             addButton.prop("disabled", true);
         }
@@ -250,6 +248,8 @@ $(document).ready(function () {
                     title,
                     description,
                     completeByDate,
+                    createdOn: currentDate.toISOString(),
+                    updatedOn: currentDate.toISOString(),
                 });
             }
             updateLocalStorageTasks();
