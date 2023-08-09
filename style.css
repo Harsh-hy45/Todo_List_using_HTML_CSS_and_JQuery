@@ -390,6 +390,53 @@ section h3 {
   border-color: var(--pink);
 }
 
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  margin-right: 10px;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--dark);
+  border-radius: 4px;
+  background-color: var(--light);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox-container:hover .checkmark {
+  border-color: var(--darker);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--purple);
+  border-color: var(--purple);
+}
+
+.checkmark:after {
+  content: "\2713"; /* Unicode checkmark symbol */
+  font-size: 14px;
+  color: white;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Adjust the checkmark position based on your design */
+.checkmark:after {
+  position: relative;
+  top: -3px;
+  left: 3px;
+}
+
 
 
 

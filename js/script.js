@@ -11,7 +11,6 @@ const deleteModal = $("#delete-modal");
 const searchBar = $("#search-bar");
 const taskTitles = [];
 
-// const taskArray=$("#task-table tbody");
 
 let currentDate = new Date();
 let tasks;
@@ -36,12 +35,18 @@ function viewTask(index) {
     window.location.href = taskDetailsUrl;
 }
 
-function addTask(title, description, completeByDate) {
+function addTask(title, description, completeByDate, completed) {
     const taskRow = $(`
     <tr class="task">
+      <td class="status">
+        <label class="checkbox-container">
+           <input class="complete-checkbox" type="checkbox" ${completed ? "checked" : ""}>
+           <span class="checkmark"></span>
+        </label>
+      </td>
       <td class="content">
-        <input class="task-title" type="text" value="${title}" readonly>
-            </td>
+         <input class="task-title" type="text" value="${title}" readonly>
+      </td>
       <td class="actions">
         <button class="view">View</button>
         <button class="edit">Edit</button>
@@ -79,12 +84,18 @@ function addTask(title, description, completeByDate) {
     });
 }
 
-function updateTask(index, title, description, completeByDate) {
+function updateTask(index, title, description, completeByDate,completed) {
     const taskToEdit = tasks[index];
     taskToEdit.title = title;
     taskToEdit.description = description;
     taskToEdit.completeByDate = completeByDate;
+    taskToEdit.completed = completed;
     taskToEdit.updatedOn = new Date().toISOString();
+    if (completed) {
+        taskToEdit.completedOn = new Date().toISOString();
+    } else {
+        taskToEdit.completedOn = null; 
+    }
     const taskRow = taskList.children().eq(index);
     const taskContentElement = taskRow.find(".content");
     taskContentElement.find(".task-title").val(title);
@@ -136,6 +147,13 @@ $(document).ready(function () {
         form.trigger("reset");
         editingMode = "add";
         $("#task-modal").css("display", "none");
+    });
+
+    taskList.on("change", ".complete-checkbox", function () {
+        const taskIndex = $(this).closest(".task").index();
+        const completed = $(this).prop("checked");
+        updateTask(taskIndex, tasks[taskIndex].title, tasks[taskIndex].description, tasks[taskIndex].completeByDate, completed);
+        updateLocalStorageTasks();
     });
 
     $("#reset-form").click(function () {
@@ -217,7 +235,7 @@ $(document).ready(function () {
     searchBar.on("input", function () {
         const searchTerm = searchBar.val().toLowerCase();
         taskList.find('.task').show();
-       
+
 
         taskList.find('.task .content .task-title').each(function () {
             const taskTitle = $(this).val().toLowerCase();
@@ -243,13 +261,15 @@ $(document).ready(function () {
                 editingMode = "add";
                 addButton.val("Add Task");
             } else {
-                addTask(title, description, completeByDate);
+                addTask(title, description, completeByDate, false);
                 tasks.push({
                     title,
                     description,
                     completeByDate,
+                    completed: false,
                     createdOn: currentDate.toISOString(),
                     updatedOn: currentDate.toISOString(),
+                    completedOn:null,
                 });
             }
             updateLocalStorageTasks();

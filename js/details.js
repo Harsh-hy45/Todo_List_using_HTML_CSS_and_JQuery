@@ -19,10 +19,15 @@ $(document).ready(function () {
     $("#created-on-date").text(createdDate);
     $("#created-on-time").text(createdTime);
 
-    // Display updatedOn date and time separately
     const updatedOnDate = new Date(taskDetails.updatedOn);
     const updatedDate = updatedOnDate.toDateString();
     const updatedTime = updatedOnDate.toLocaleTimeString();
     $("#updated-on-date").text(updatedDate);
     $("#updated-on-time").text(updatedTime);
+
+    const completedOnDate = new Date(taskDetails.completedOn);
+    const completedDate = completedOnDate.toDateString();
+    const completedTime = completedOnDate.toLocaleTimeString();
+    $("#completed-on-date").text(completedDate);
+    $("#completed-on-time").text(completedTime);
 });
