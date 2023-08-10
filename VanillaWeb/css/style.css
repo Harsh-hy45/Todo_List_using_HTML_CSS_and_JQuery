@@ -93,7 +93,6 @@ button {
   border: 1px solid #888;
   width: fit-content;
   border-radius: 10px;
-
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -114,7 +113,6 @@ button {
 .delete
  {
   color: #a13a33;
-  /* background-color: var(--button); */
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -135,7 +133,6 @@ button {
 .delete:hover,
 .cancel:hover {
   background-color: var(--button-hover);
-  /* background-color: var(--button); */
 }
 
 #new-task-form {
@@ -166,7 +163,9 @@ button {
   margin-bottom: 1rem;
   font-family: "Fira sans", sans-serif;
 }
-
+tbody{
+  width:100vw;
+}
 #new-task-form input[type="text"]::placeholder,
 #new-task-form textarea::placeholder,
 #new-task-form input[type="datetime-local"]::placeholder {
@@ -261,6 +260,7 @@ section h3 {
   background-color: var(--darkest);
   padding: 15px;
   border-radius: 5px;
+  max-height: 50px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
@@ -281,6 +281,9 @@ section h3 {
 .task .actions {
   display: flex;
   margin-top: 10px;
+  min-width: 36%;
+  justify-content: space-between;
+
 }
 
 .task .actions button {
@@ -420,7 +423,7 @@ section h3 {
 }
 
 .checkmark:after {
-  content: "\2713"; /* Unicode checkmark symbol */
+  content: "\2713"; 
   font-size: 14px;
   color: white;
   display: none;
@@ -430,17 +433,18 @@ section h3 {
   display: block;
 }
 
-/* Adjust the checkmark position based on your design */
 .checkmark:after {
   position: relative;
   top: -3px;
   left: 3px;
 }
 
-
-
-
-
-
-
+#completion{
+  background-image: linear-gradient(to right, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  color: var(--light);
+}
 

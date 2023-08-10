@@ -1,0 +1,5 @@
+Create the to-do list application using HTML, CSS, and Javascript with jQuery.
+
+The only library you are permitted to use here is jQuery.
+
+jQuery: https://jquery.com/

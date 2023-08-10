@@ -10,14 +10,11 @@ const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
 const searchBar = $("#search-bar");
 const taskTitles = [];
-
-
 let currentDate = new Date();
 let tasks;
 let taskToDeleteIndex;
 let editingMode = "add";
 let taskCounter = 1;
-
 
 function openDeleteModal(index) {
     taskToDeleteIndex = index;
@@ -30,7 +27,6 @@ function closeDeleteModal() {
 
 function viewTask(index) {
     const taskToView = tasks[index];
-    console.log(index);
     const taskDetailsUrl = `details.html?id=${index}`;
     window.location.href = taskDetailsUrl;
 }
@@ -48,6 +44,7 @@ function addTask(title, description, completeByDate, completed) {
          <input class="task-title" type="text" value="${title}" readonly>
       </td>
       <td class="actions">
+         <p id="completion"></p>
         <button class="view">View</button>
         <button class="edit">Edit</button>
         <button class="delete"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
@@ -56,7 +53,6 @@ function addTask(title, description, completeByDate, completed) {
   `);
 
     taskList.append(taskRow);
-
     const taskViewButton = $("#task-table tbody tr:last-child .view");
     const taskEditButton = $("#task-table tbody tr:last-child .edit");
     const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
@@ -84,17 +80,17 @@ function addTask(title, description, completeByDate, completed) {
     });
 }
 
-function updateTask(index, title, description, completeByDate,completed) {
+function updateTask(index, title, description, completeByDate, completed) {
     const taskToEdit = tasks[index];
     taskToEdit.title = title;
     taskToEdit.description = description;
     taskToEdit.completeByDate = completeByDate;
     taskToEdit.completed = completed;
-    taskToEdit.updatedOn = new Date().toISOString();
+    taskToEdit.updatedOn = new Date().toISOString();    
     if (completed) {
         taskToEdit.completedOn = new Date().toISOString();
     } else {
-        taskToEdit.completedOn = null; 
+        taskToEdit.completedOn = "";
     }
     const taskRow = taskList.children().eq(index);
     const taskContentElement = taskRow.find(".content");
@@ -105,7 +101,6 @@ function updateTask(index, title, description, completeByDate,completed) {
 
 function updateLocalStorageTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    console.log(editingMode);
 }
 
 function validateForm(title, description, completeByDate) {
@@ -127,6 +122,28 @@ function validateCompleteBy(completeByDate) {
     return !!completeByDate;
 }
 
+function resetFormErrors() {
+    hideError(inputTitle);
+    hideError(inputDescription);
+    hideError(inputCompleteByDate);
+}
+
+function closeModal() {
+    form.trigger("reset");
+    $("#task-modal").css("display", "none");
+}
+
+function showError(inputElement, message) {
+    const errorElement = $(`#${inputElement.attr('id')}-error`);
+    errorElement.text(message);
+    errorElement.show();
+}
+
+function hideError(inputElement) {
+    const errorElement = $(`#${inputElement.attr('id')}-error`);
+    errorElement.text("");
+    errorElement.hide();
+}
 
 $(document).ready(function () {
     tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -152,6 +169,19 @@ $(document).ready(function () {
     taskList.on("change", ".complete-checkbox", function () {
         const taskIndex = $(this).closest(".task").index();
         const completed = $(this).prop("checked");
+        const taskRow = taskList.children().eq(taskIndex);
+        const editButton = taskRow.find(".edit");
+        const viewButton=taskRow.find(".view");
+    
+        if (completed) {
+            editButton.hide();
+            taskRow.find("#completion").text("Completed !!");
+
+        }
+        else {
+            editButton.show();
+            taskRow.find("#completion").text("");
+        }
         updateTask(taskIndex, tasks[taskIndex].title, tasks[taskIndex].description, tasks[taskIndex].completeByDate, completed);
         updateLocalStorageTasks();
     });
@@ -160,35 +190,12 @@ $(document).ready(function () {
         form.trigger("reset");
     });
 
-    function showError(inputElement, message) {
-        const errorElement = $(`#${inputElement.attr('id')}-error`);
-        errorElement.text(message);
-        errorElement.show();
-    }
-
-    function hideError(inputElement) {
-        const errorElement = $(`#${inputElement.attr('id')}-error`);
-        errorElement.text("");
-        errorElement.hide();
-    }
-
     Date.prototype.yyyymmdd = function () {
         var yyyy = this.getFullYear().toString();
         var mm = (this.getMonth() + 1).toString();
         var dd = this.getDate().toString();
         return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
     };
-
-    function resetFormErrors() {
-        hideError(inputTitle);
-        hideError(inputDescription);
-        hideError(inputCompleteByDate);
-    }
-
-    function closeModal() {
-        form.trigger("reset");
-        $("#task-modal").css("display", "none");
-    }
 
     inputTitle.on('input', function () {
         const title = inputTitle.val().trim();
@@ -235,8 +242,6 @@ $(document).ready(function () {
     searchBar.on("input", function () {
         const searchTerm = searchBar.val().toLowerCase();
         taskList.find('.task').show();
-
-
         taskList.find('.task .content .task-title').each(function () {
             const taskTitle = $(this).val().toLowerCase();
             if (!taskTitle.includes(searchTerm)) {
@@ -244,7 +249,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
     form.submit(function (e) {
         e.preventDefault();
@@ -269,7 +273,7 @@ $(document).ready(function () {
                     completed: false,
                     createdOn: currentDate.toISOString(),
                     updatedOn: currentDate.toISOString(),
-                    completedOn:null,
+                    completedOn: null,
                 });
             }
             updateLocalStorageTasks();
@@ -308,6 +312,5 @@ $(document).ready(function () {
 
     for (const task of tasks) {
         addTask(task.title, task.description, task.completeByDate);
-        console.log("hello");
     }
 });
