@@ -135,7 +135,7 @@ button {
   background-color: var(--button-hover);
 }
 
-#new-task-form {
+#task-form {
   display: flex;
   flex-direction: column;
   max-width: 400px;
@@ -144,16 +144,16 @@ button {
   border-radius: 1rem;
 }
 
-#new-task-form label {
+#task-form label {
   font-size: 1rem;
   color: var(--grey);
   margin-bottom: 0.5rem;
 }
 
-#new-task-form input[type="text"],
-#new-task-form input[type="date"],
-#new-task-form textarea,
-#new-task-form input[type="datetime-local"] {
+#task-form input[type="text"],
+#task-form input[type="date"],
+#task-form textarea,
+#task-form input[type="datetime-local"] {
   background-color: var(--darkest);
   padding: 0.75rem;
   border-radius: 0.5rem;
@@ -166,13 +166,13 @@ button {
 tbody{
   width:100vw;
 }
-#new-task-form input[type="text"]::placeholder,
-#new-task-form textarea::placeholder,
-#new-task-form input[type="datetime-local"]::placeholder {
+#task-form input[type="text"]::placeholder,
+#task-form textarea::placeholder,
+#task-form input[type="datetime-local"]::placeholder {
   color: var(--dark);
 }
 
-#new-task-form input[type="date"]::-webkit-calendar-picker-indicator {
+#task-form input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   border-radius: 4px;
   margin-right: 2px;
@@ -180,11 +180,11 @@ tbody{
   filter: invert(0.8);
 }
 
-#new-task-form input[type="date"]::-webkit-calendar-picker-indicator:hover {
+#task-form input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
 
-#new-task-form #new-task-submit {
+#task-form #task-submit {
   padding: 10px 15px;
   font-size: 1rem;
   font-weight: 700;
@@ -202,12 +202,12 @@ tbody{
   display: block;
 }
 
-#new-task-form #new-task-submit:hover {
+#task-form #task-submit:hover {
   opacity: 0.8;
   background-color: var(--button-hover);
 }
 
-#new-task-form #new-task-submit:active {
+#task-form #task-submit:active {
   opacity: 0.6;
 }
 
@@ -298,7 +298,8 @@ section h3 {
 }
 
 .task .actions button.edit,
-.task .actions button.view
+.task .actions button.view,
+#completion
  {
   background-image: linear-gradient(to right, var(--pink), var(--purple));
   -webkit-background-clip: text;
@@ -439,12 +440,4 @@ section h3 {
   left: 3px;
 }
 
-#completion{
-  background-image: linear-gradient(to right, var(--pink), var(--purple));
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-  color: var(--light);
-}
 

@@ -1,20 +1,31 @@
-const form = $("#new-task-form");
+const form = $("#task-form");
 const inputTitle = $("#task-title");
 const inputDescription = $("#task-description");
 const inputCompleteByDate = $("#complete-by-date");
 const taskList = $("#tasks");
-const addButton = $("#new-task-submit");
-const editButton = $(".edit");
+const addButton = $("#task-submit");
 const openModelButton = $("#open-modal-button");
 const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
 const searchBar = $("#search-bar");
-const taskTitles = [];
 let currentDate = new Date();
 let tasks;
 let taskToDeleteIndex;
 let editingMode = "add";
 let taskCounter = 1;
+
+class Task{
+    constructor(title, description, completeByDate)
+    {
+        this.title=title;
+        this.description=description;
+        this.completeByDate=completeByDate;
+        this.completed=false;
+        this.createdOn= currentDate;
+        this.updatedOn=this.createdOn;
+        this.completedOn=null;
+    }
+}
 
 function openDeleteModal(index) {
     taskToDeleteIndex = index;
@@ -31,17 +42,17 @@ function viewTask(index) {
     window.location.href = taskDetailsUrl;
 }
 
-function addTask(title, description, completeByDate, completed) {
+function addTaskToDOM(task) {
     const taskRow = $(`
     <tr class="task">
       <td class="status">
         <label class="checkbox-container">
-           <input class="complete-checkbox" type="checkbox" ${completed ? "checked" : ""}>
+           <input class="complete-checkbox" type="checkbox" ${task.completed ? "checked" : ""}>
            <span class="checkmark"></span>
         </label>
       </td>
       <td class="content">
-         <input class="task-title" type="text" value="${title}" readonly>
+         <input class="task-title" type="text" value="${task.title}" readonly>
       </td>
       <td class="actions">
          <p id="completion"></p>
@@ -111,11 +122,18 @@ function validateForm(title, description, completeByDate) {
 }
 
 function validateTitle(title) {
-    return title.length >= 3 && title.length <= 50;
+    if(title.trim().length >= 3 && title.trim().length <= 50)
+    {
+      return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 function validateDescription(description) {
-    return description.length <= 200;
+    return description.trim().length <= 200;
 }
 
 function validateCompleteBy(completeByDate) {
@@ -143,6 +161,13 @@ function hideError(inputElement) {
     const errorElement = $(`#${inputElement.attr('id')}-error`);
     errorElement.text("");
     errorElement.hide();
+}
+
+Date.prototype.yyyymmdd = function () {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth() + 1).toString();
+    var dd = this.getDate().toString();
+    return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
 }
 
 $(document).ready(function () {
@@ -190,13 +215,6 @@ $(document).ready(function () {
         form.trigger("reset");
     });
 
-    Date.prototype.yyyymmdd = function () {
-        var yyyy = this.getFullYear().toString();
-        var mm = (this.getMonth() + 1).toString();
-        var dd = this.getDate().toString();
-        return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
-    };
-
     inputTitle.on('input', function () {
         const title = inputTitle.val().trim();
         if (!validateTitle(title)) {
@@ -235,10 +253,6 @@ $(document).ready(function () {
         }
     });
 
-    for (const task of tasks) {
-        taskTitles.push(task.title);
-    }
-
     searchBar.on("input", function () {
         const searchTerm = searchBar.val().toLowerCase();
         taskList.find('.task').show();
@@ -265,23 +279,15 @@ $(document).ready(function () {
                 editingMode = "add";
                 addButton.val("Add Task");
             } else {
-                addTask(title, description, completeByDate, false);
-                tasks.push({
-                    title,
-                    description,
-                    completeByDate,
-                    completed: false,
-                    createdOn: currentDate.toISOString(),
-                    updatedOn: currentDate.toISOString(),
-                    completedOn: null,
-                });
+                const newTask= new Task(title,description,completeByDate);
+                tasks.push(newTask);
+                addTaskToDOM(newTask);
             }
             updateLocalStorageTasks();
             inputTitle.val("");
             inputDescription.val("");
             inputCompleteByDate.val("");
         } else {
-
             if (!validateTitle(title)) {
                 showError(inputTitle, "Title should be between 3 and 50 characters.");
             }
@@ -311,6 +317,6 @@ $(document).ready(function () {
     });
 
     for (const task of tasks) {
-        addTask(task.title, task.description, task.completeByDate);
+        addTaskToDOM(task);
     }
 });
