@@ -14,15 +14,16 @@ let taskToDeleteIndex;
 let editingMode = "add";
 let taskCounter = 1;
 
-class Task {
-    constructor(title, description, completeByDate) {
-        this.title = title;
-        this.description = description;
-        this.completeByDate = completeByDate;
-        this.completed = false;
-        this.createdOn = currentDate;
-        this.updatedOn = this.createdOn;
-        this.completedOn = null;
+class Task{
+    constructor(title, description, completeByDate)
+    {
+        this.title=title;
+        this.description=description;
+        this.completeByDate=completeByDate;
+        this.completed=false;
+        this.createdOn= currentDate;
+        this.updatedOn=this.createdOn;
+        this.completedOn=null;
     }
 }
 
@@ -51,13 +52,7 @@ function addTaskToDOM(task) {
         </label>
       </td>
       <td class="content">
-         <input class="inputval" type="text" value="${task.title}" readonly>
-      </td>
-      <td class="completeBy">
-         <input class="inputval" type="text" value="${task.completeByDate}" readonly>
-      </td>
-      <td class="completedOn">
-         <input class="inputval" type="text" value="${task.completedOn}" readonly>
+         <input class="task-title" type="text" value="${task.title}" readonly>
       </td>
       <td class="actions">
          <p id="completion"></p>
@@ -102,7 +97,7 @@ function updateTask(index, title, description, completeByDate, completed) {
     taskToEdit.description = description;
     taskToEdit.completeByDate = completeByDate;
     taskToEdit.completed = completed;
-    taskToEdit.updatedOn = new Date().toISOString();
+    taskToEdit.updatedOn = new Date().toISOString();    
     if (completed) {
         taskToEdit.completedOn = new Date().toISOString();
     } else {
@@ -127,10 +122,12 @@ function validateForm(title, description, completeByDate) {
 }
 
 function validateTitle(title) {
-    if (title.trim().length >= 3 && title.trim().length <= 50) {
-        return true;
+    if(title.trim().length >= 3 && title.trim().length <= 50)
+    {
+      return true;
     }
-    else {
+    else
+    {
         return false;
     }
 }
@@ -150,7 +147,6 @@ function resetFormErrors() {
 }
 
 function closeModal() {
-    addButton.prop("disabled", false);
     form.trigger("reset");
     $("#task-modal").css("display", "none");
 }
@@ -200,8 +196,8 @@ $(document).ready(function () {
         const completed = $(this).prop("checked");
         const taskRow = taskList.children().eq(taskIndex);
         const editButton = taskRow.find(".edit");
-        const viewButton = taskRow.find(".view");
-
+        const viewButton=taskRow.find(".view");
+    
         if (completed) {
             editButton.hide();
             taskRow.find("#completion").text("Completed !!");
@@ -283,7 +279,7 @@ $(document).ready(function () {
                 editingMode = "add";
                 addButton.val("Add Task");
             } else {
-                const newTask = new Task(title.trim(), description.trim(), completeByDate);
+                const newTask= new Task(title.trim(),description.trim(),completeByDate);
                 tasks.push(newTask);
                 addTaskToDOM(newTask);
             }
@@ -324,10 +320,3 @@ $(document).ready(function () {
         addTaskToDOM(task);
     }
 });
-
-{/* <td class="content">
-<input class="task-title" type="text" value="${task.completeByDate}" readonly>
-</td>
-<td class="content">
-<input class="task-title" type="text" value="${task.completedOn}" readonly>
-</td> */}

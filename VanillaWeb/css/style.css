@@ -8,7 +8,6 @@
   --light: #eee;
   --button: #535c6d;
   --button-hover: #a6afc2;
-  --heading: #202838;
 }
 
 body {
@@ -164,9 +163,8 @@ button {
   margin-bottom: 1rem;
   font-family: "Fira sans", sans-serif;
 }
-
 tbody{
-  width:150vw;
+  width:100vw;
 }
 #task-form input[type="text"]::placeholder,
 #task-form textarea::placeholder,
@@ -255,7 +253,8 @@ tbody{
 
 main {
   flex: 1 1 0%;
-  width: 80%;
+  max-width: 800px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -272,28 +271,6 @@ section h3 {
   padding-top: 20px;
 }
 
-.heading{
-  /* display: flex; */
-  /* width: 50vw; */
-  width: 100%;
-  justify-content: space-between;
-  background-color: var(--heading);
-  color: var(--light);
-  padding: 8px;
-  max-height: 50px;
-  margin-bottom: 10px;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 300;
-  text-align: justify;
-}
-
-.heading th {
-  color: var(--light);
-  padding: 12px 8px;
-  text-align: center;
-}
-
 #tasks .task {
   display: flex;
   justify-content: space-between;
@@ -304,10 +281,9 @@ section h3 {
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
-  text-align: center;
 }
 
-.task .content .text,thead {
+.task .content .text {
   color: var(--light);
   font-size: 1.125rem;
   width: 100%;
@@ -319,30 +295,12 @@ section h3 {
   color: var(--pink);
 }
 
-.status{
-  width: 10%;
-}
-
-.content{
-  width: 30%;
-}
-
-.completeBy{
- width: 15%;
-}
-
-.completedOn{
-width:15%;
-}
-
-.actions{
-  width: 30%;
-}
-
 .task .actions {
-  width:30%;
-  display: flex; 
-  justify-content: space-around;
+  display: flex;
+  margin-top: 10px;
+  min-width: 36%;
+  justify-content: space-between;
+
 }
 
 .task .actions button {
@@ -379,8 +337,19 @@ width:15%;
   overflow: hidden;
 }
 
+#task-table th {
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 12px 8px;
+  text-align: left;
+}
+
 #task-table td {
   padding: 12px 8px;
+}
+
+#task-table tr:nth-child(even) {
+  background-color: var(--darker);
 }
 
 #task-table tr {
@@ -391,11 +360,10 @@ width:15%;
   border-bottom: none;
 }
 
-.inputval {
+.task-title {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--light);
-  text-align: center;
   flex-grow: 1;
 }
 
@@ -488,4 +456,5 @@ width:15%;
   top: -3px;
   left: 3px;
 }
+
 
