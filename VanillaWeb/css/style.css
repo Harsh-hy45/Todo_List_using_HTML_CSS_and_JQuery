@@ -8,6 +8,7 @@
   --light: #eee;
   --button: #535c6d;
   --button-hover: #a6afc2;
+  --heading: #202838;
 }
 
 body {
@@ -163,8 +164,9 @@ button {
   margin-bottom: 1rem;
   font-family: "Fira sans", sans-serif;
 }
+
 tbody{
-  width:100vw;
+  width:150vw;
 }
 #task-form input[type="text"]::placeholder,
 #task-form textarea::placeholder,
@@ -211,6 +213,23 @@ tbody{
   opacity: 0.6;
 }
 
+#task-submit:disabled {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: red;
+  cursor: not-allowed !important;
+  background-image: none !important;
+  -webkit-text-fill-color: initial;
+  -moz-text-fill-color: initial;
+  border: none;
+  transition: 0.4s;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin: 0 auto;
+  display: block;
+}
+
 #reset-form {
   padding: 10px 15px;
   font-size: 1rem;
@@ -236,8 +255,7 @@ tbody{
 
 main {
   flex: 1 1 0%;
-  max-width: 800px;
-  width: 100%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -254,6 +272,28 @@ section h3 {
   padding-top: 20px;
 }
 
+.heading{
+  /* display: flex; */
+  /* width: 50vw; */
+  width: 100%;
+  justify-content: space-between;
+  background-color: var(--heading);
+  color: var(--light);
+  padding: 8px;
+  max-height: 50px;
+  margin-bottom: 10px;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: justify;
+}
+
+.heading th {
+  color: var(--light);
+  padding: 12px 8px;
+  text-align: center;
+}
+
 #tasks .task {
   display: flex;
   justify-content: space-between;
@@ -264,9 +304,10 @@ section h3 {
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
+  text-align: center;
 }
 
-.task .content .text {
+.task .content .text,thead {
   color: var(--light);
   font-size: 1.125rem;
   width: 100%;
@@ -278,12 +319,30 @@ section h3 {
   color: var(--pink);
 }
 
-.task .actions {
-  display: flex;
-  margin-top: 10px;
-  min-width: 36%;
-  justify-content: space-between;
+.status{
+  width: 10%;
+}
 
+.content{
+  width: 30%;
+}
+
+.completeBy{
+ width: 15%;
+}
+
+.completedOn{
+width:15%;
+}
+
+.actions{
+  width: 30%;
+}
+
+.task .actions {
+  width:30%;
+  display: flex; 
+  justify-content: space-around;
 }
 
 .task .actions button {
@@ -320,19 +379,8 @@ section h3 {
   overflow: hidden;
 }
 
-#task-table th {
-  background-color: var(--dark);
-  color: var(--light);
-  padding: 12px 8px;
-  text-align: left;
-}
-
 #task-table td {
   padding: 12px 8px;
-}
-
-#task-table tr:nth-child(even) {
-  background-color: var(--darker);
 }
 
 #task-table tr {
@@ -343,10 +391,11 @@ section h3 {
   border-bottom: none;
 }
 
-.task-title {
+.inputval {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--light);
+  text-align: center;
   flex-grow: 1;
 }
 
@@ -439,5 +488,4 @@ section h3 {
   top: -3px;
   left: 3px;
 }
-
 
