@@ -37,9 +37,32 @@ function closeDeleteModal() {
 }
 
 function viewTask(index) {
-    const taskToView = tasks[index];
+
     const taskDetailsUrl = `details.html?id=${index}`;
     window.location.href = taskDetailsUrl;
+}
+function getDate(rawDate)
+{
+    if(rawDate)
+    {
+       console.log(new Date(rawDate).toDateString());
+       return new Date(rawDate).toDateString();
+    }
+    else{
+        console.log(rawDate);
+        console.log("In Progress...");
+        return "In Progress...";
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
 function addTaskToDOM(task) {
@@ -52,10 +75,15 @@ function addTaskToDOM(task) {
         </label>
       </td>
       <td class="content">
-         <input class="task-title" type="text" value="${task.title}" readonly>
+          <input class="task-title" type="text" value="${task.title}" readonly>
+      </td>
+      <td class="completeby">
+          <input class="task-completeby" type="text" value="${getDate(task.completeByDate)}" readonly>
+      </td>
+      <td class="completedon">
+          <input class="task-completedon" id="completedon" type="text" value="In Progress..." readonly>
       </td>
       <td class="actions">
-         <p id="completion"></p>
         <button class="view">View</button>
         <button class="edit">Edit</button>
         <button class="delete"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
@@ -64,9 +92,9 @@ function addTaskToDOM(task) {
   `);
 
     taskList.append(taskRow);
-    const taskViewButton = $("#task-table tbody tr:last-child .view");
-    const taskEditButton = $("#task-table tbody tr:last-child .edit");
-    const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
+    const taskViewButton = $(".view");
+    const taskEditButton = $(".edit");
+    const taskDeleteButton = $(".delete");
 
     taskViewButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
@@ -74,6 +102,8 @@ function addTaskToDOM(task) {
     });
 
     taskEditButton.click(function () {
+        resetFormErrors();
+        addButton.prop("disabled",false);
         const taskIndex = $(this).closest(".task").index();
         const taskToEdit = tasks[taskIndex];
         inputTitle.val(taskToEdit.title);
@@ -196,16 +226,16 @@ $(document).ready(function () {
         const completed = $(this).prop("checked");
         const taskRow = taskList.children().eq(taskIndex);
         const editButton = taskRow.find(".edit");
+        const dateselector=taskRow.find(".task-completedon")
         const viewButton=taskRow.find(".view");
     
         if (completed) {
             editButton.hide();
-            taskRow.find("#completion").text("Completed !!");
-
+            dateselector.val(getDate(tasks[taskIndex].completedOn));
         }
         else {
             editButton.show();
-            taskRow.find("#completion").text("");
+            dateselector.val("In Progress...");
         }
         updateTask(taskIndex, tasks[taskIndex].title, tasks[taskIndex].description, tasks[taskIndex].completeByDate, completed);
         updateLocalStorageTasks();
@@ -222,7 +252,6 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputTitle);
-            addButton.prop("disabled", false);
         }
     });
 
@@ -233,7 +262,7 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputDescription);
-            addButton.prop("disabled", false);
+            addButton.prop("disabled",false);
         }
     });
 
@@ -249,7 +278,7 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputCompleteByDate);
-            addButton.prop("disabled", false);
+             addButton.prop("disabled", false);
         }
     });
 

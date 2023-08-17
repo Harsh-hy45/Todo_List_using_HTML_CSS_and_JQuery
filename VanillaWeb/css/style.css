@@ -8,6 +8,7 @@
   --light: #eee;
   --button: #535c6d;
   --button-hover: #a6afc2;
+  --heading: #202838;
 }
 
 body {
@@ -110,8 +111,7 @@ button {
   cursor: pointer;
 }
 
-.delete
- {
+.delete {
   color: #a13a33;
   padding: 10px 15px;
   border: none;
@@ -120,7 +120,7 @@ button {
   margin-right: 10px;
 }
 
-.cancel{
+.cancel {
   background-color: #4b4e53;
   color: white;
   padding: 10px 15px;
@@ -163,9 +163,11 @@ button {
   margin-bottom: 1rem;
   font-family: "Fira sans", sans-serif;
 }
-tbody{
-  width:100vw;
+
+tbody {
+  width: 100vw;
 }
+
 #task-form input[type="text"]::placeholder,
 #task-form textarea::placeholder,
 #task-form input[type="datetime-local"]::placeholder {
@@ -251,10 +253,28 @@ tbody{
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+.heading {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: var(--heading);
+  color: var(--light);
+  padding: 1.25rem 0rem;
+  margin-bottom: 10px;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: justify;
+}
+
+.heading th {
+  color: var(--light);
+  text-align: center;
+}
+
 main {
   flex: 1 1 0%;
-  max-width: 800px;
-  width: 100%;
+  width: 1000px;
   margin: 0 auto;
 }
 
@@ -275,32 +295,12 @@ section h3 {
   display: flex;
   justify-content: space-between;
   background-color: var(--darkest);
-  padding: 15px;
+  padding: 1.5rem 0rem;
   border-radius: 5px;
   max-height: 50px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
-}
-
-.task .content .text {
-  color: var(--light);
-  font-size: 1.125rem;
-  width: 100%;
-  display: block;
-  transition: 0.4s;
-}
-
-.task .content .text:not(:read-only) {
-  color: var(--pink);
-}
-
-.task .actions {
-  display: flex;
-  margin-top: 10px;
-  min-width: 36%;
-  justify-content: space-between;
-
 }
 
 .task .actions button {
@@ -311,13 +311,10 @@ section h3 {
   text-transform: uppercase;
   transition: 0.4s;
   border-radius: 5px;
-  padding: 5px 10px;
 }
 
 .task .actions button.edit,
-.task .actions button.view,
-#completion
- {
+.task .actions button.view {
   background-image: linear-gradient(to right, var(--pink), var(--purple));
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -335,17 +332,11 @@ section h3 {
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-}
 
-#task-table th {
-  background-color: var(--dark);
-  color: var(--light);
-  padding: 12px 8px;
-  text-align: left;
 }
 
 #task-table td {
-  padding: 12px 8px;
+  text-align: center;
 }
 
 #task-table tr:nth-child(even) {
@@ -360,11 +351,57 @@ section h3 {
   border-bottom: none;
 }
 
-.task-title {
-  font-size: 1.5rem;
+.task-title,
+.task-completeby,
+.task-completedon {
+  font-size: 1.25rem;
+  text-align: center;
   font-weight: 500;
   color: var(--light);
   flex-grow: 1;
+  width: 100%;
+}
+
+.task .status {
+  width: 20%;
+}
+
+.heading .status {
+  width: 20%;
+}
+
+.task .content {
+  width: 20%;
+}
+
+.heading .content {
+  width: 20%;
+}
+
+.task .completeby {
+  width: 20%;
+}
+
+.heading .completeby {
+  width: 20%;
+}
+
+.task .completedon {
+  width: 20%;
+}
+
+.heading .completeon {
+  width: 20%;
+}
+
+.heading .actions {
+  width: 20%;
+}
+
+.task .actions {
+  min-width: 20%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .edit-title {
@@ -391,7 +428,7 @@ section h3 {
 }
 
 #search-bar {
-  background-color: var(--darker); 
+  background-color: var(--darker);
   border: 1px solid var(--darker);
   color: var(--light);
   padding: 8px 12px;
@@ -399,7 +436,7 @@ section h3 {
   font-size: 14px;
   width: 100%;
   margin-bottom: 15px;
-  padding-right: 30px; 
+  padding-right: 30px;
 }
 
 #search-bar::placeholder {
@@ -435,19 +472,19 @@ section h3 {
   border-color: var(--darker);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked~.checkmark {
   background-color: var(--purple);
   border-color: var(--purple);
 }
 
 .checkmark:after {
-  content: "\2713"; 
+  content: "\2713";
   font-size: 14px;
   color: white;
   display: none;
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -456,5 +493,3 @@ section h3 {
   top: -3px;
   left: 3px;
 }
-
-
