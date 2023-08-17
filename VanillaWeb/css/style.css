@@ -259,7 +259,6 @@ tbody {
   justify-content: space-between;
   background-color: var(--heading);
   color: var(--light);
-  padding: 1.25rem 0rem;
   margin-bottom: 10px;
   align-items: center;
   font-size: 1rem;
@@ -268,6 +267,8 @@ tbody {
 }
 
 .heading th {
+  border: 2px solid var(--darkest);
+  padding: 15px 0px;
   color: var(--light);
   text-align: center;
 }
@@ -336,7 +337,9 @@ section h3 {
 }
 
 #task-table td {
+  border-right: 1px solid var(--dark); 
   text-align: center;
+  font-weight: 500;
 }
 
 #task-table tr:nth-child(even) {
@@ -382,7 +385,7 @@ section h3 {
   width: 20%;
 }
 
-.heading .completeby {
+.heading .completeBy {
   width: 20%;
 }
 
@@ -390,7 +393,7 @@ section h3 {
   width: 20%;
 }
 
-.heading .completeon {
+.heading .completedOn {
   width: 20%;
 }
 

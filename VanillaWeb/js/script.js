@@ -13,17 +13,18 @@ let tasks;
 let taskToDeleteIndex;
 let editingMode = "add";
 let taskCounter = 1;
+let saveTask = "Save Task";
+let addTask = "Add Task";
 
-class Task{
-    constructor(title, description, completeByDate)
-    {
-        this.title=title;
-        this.description=description;
-        this.completeByDate=completeByDate;
-        this.completed=false;
-        this.createdOn= currentDate;
-        this.updatedOn=this.createdOn;
-        this.completedOn=null;
+class Task {
+    constructor(title, description, completeByDate) {
+        this.title = title;
+        this.description = description;
+        this.completeByDate = completeByDate;
+        this.completed = false;
+        this.createdOn = currentDate;
+        this.updatedOn = this.createdOn;
+        this.completedOn = null;
     }
 }
 
@@ -37,32 +38,12 @@ function closeDeleteModal() {
 }
 
 function viewTask(index) {
-
     const taskDetailsUrl = `details.html?id=${index}`;
     window.location.href = taskDetailsUrl;
 }
-function getDate(rawDate)
-{
-    if(rawDate)
-    {
-       console.log(new Date(rawDate).toDateString());
-       return new Date(rawDate).toDateString();
-    }
-    else{
-        console.log(rawDate);
-        console.log("In Progress...");
-        return "In Progress...";
-    }
 
-
-
-
-
-
-
-
-
-
+function getDate(rawDate) {
+    return rawDate ? new Date(rawDate).toDateString() : "In Progress...";
 }
 
 function addTaskToDOM(task) {
@@ -71,8 +52,7 @@ function addTaskToDOM(task) {
       <td class="status">
         <label class="checkbox-container">
            <input class="complete-checkbox" type="checkbox" ${task.completed ? "checked" : ""}>
-           <span class="checkmark"></span>
-        </label>
+           <span class="checkmark"><el>
       </td>
       <td class="content">
           <input class="task-title" type="text" value="${task.title}" readonly>
@@ -81,11 +61,11 @@ function addTaskToDOM(task) {
           <input class="task-completeby" type="text" value="${getDate(task.completeByDate)}" readonly>
       </td>
       <td class="completedon">
-          <input class="task-completedon" id="completedon" type="text" value="In Progress..." readonly>
+          <input class="task-completedon" type="text" value="${task.completed ? getDate(task.completedOn) : 'In Progress...'}" readonly>
       </td>
       <td class="actions">
         <button class="view">View</button>
-        <button class="edit">Edit</button>
+        ${task.completed ? '' : '<button class="edit">Edit</button>'}
         <button class="delete"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
       </td>
     </tr>
@@ -94,7 +74,7 @@ function addTaskToDOM(task) {
     taskList.append(taskRow);
     const taskViewButton = $(".view");
     const taskEditButton = $(".edit");
-    const taskDeleteButton = $(".delete");
+    const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
 
     taskViewButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
@@ -103,7 +83,7 @@ function addTaskToDOM(task) {
 
     taskEditButton.click(function () {
         resetFormErrors();
-        addButton.prop("disabled",false);
+        addButton.prop("disabled", false);
         const taskIndex = $(this).closest(".task").index();
         const taskToEdit = tasks[taskIndex];
         inputTitle.val(taskToEdit.title);
@@ -111,7 +91,7 @@ function addTaskToDOM(task) {
         inputCompleteByDate.val(taskToEdit.completeByDate);
         form.data("edit-index", taskIndex);
         editingMode = "edit";
-        addButton.val("Save Task");
+        addButton.val(saveTask);
         $("#task-modal").css("display", "block");
     });
 
@@ -127,7 +107,7 @@ function updateTask(index, title, description, completeByDate, completed) {
     taskToEdit.description = description;
     taskToEdit.completeByDate = completeByDate;
     taskToEdit.completed = completed;
-    taskToEdit.updatedOn = new Date().toISOString();    
+    taskToEdit.updatedOn = new Date().toISOString();
     if (completed) {
         taskToEdit.completedOn = new Date().toISOString();
     } else {
@@ -145,29 +125,15 @@ function updateLocalStorageTasks() {
 }
 
 function validateForm(title, description, completeByDate) {
-    if (validateTitle(title) && validateDescription(description) && validateCompleteBy(completeByDate)) {
-        return true;
-    }
-    return false;
+    return (validateTitle(title) && validateDescription(description) && completeByDate);
 }
 
 function validateTitle(title) {
-    if(title.trim().length >= 3 && title.trim().length <= 50)
-    {
-      return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (title.trim().length >= 3 && title.trim().length <= 50);
 }
 
 function validateDescription(description) {
     return description.trim().length <= 200;
-}
-
-function validateCompleteBy(completeByDate) {
-    return !!completeByDate;
 }
 
 function resetFormErrors() {
@@ -211,7 +177,7 @@ $(document).ready(function () {
         resetFormErrors();
         editingMode = "add";
         addButton.prop("disabled", true);
-        addButton.val("Add Task");
+        addButton.val(addTask);
         $("#task-modal").css("display", "block");
     });
 
@@ -226,17 +192,16 @@ $(document).ready(function () {
         const completed = $(this).prop("checked");
         const taskRow = taskList.children().eq(taskIndex);
         const editButton = taskRow.find(".edit");
-        const dateselector=taskRow.find(".task-completedon")
-        const viewButton=taskRow.find(".view");
-    
+        const completedOnInput = taskRow.find(".task-completedon");
+
         if (completed) {
             editButton.hide();
-            dateselector.val(getDate(tasks[taskIndex].completedOn));
-        }
-        else {
+            completedOnInput.val(getDate(currentDate));
+        } else {
             editButton.show();
-            dateselector.val("In Progress...");
+            completedOnInput.val("In Progress...");
         }
+        
         updateTask(taskIndex, tasks[taskIndex].title, tasks[taskIndex].description, tasks[taskIndex].completeByDate, completed);
         updateLocalStorageTasks();
     });
@@ -262,7 +227,7 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputDescription);
-            addButton.prop("disabled",false);
+            addButton.prop("disabled", false);
         }
     });
 
@@ -273,12 +238,12 @@ $(document).ready(function () {
             showError(inputCompleteByDate, "You can't add previous date.");
             addButton.prop("disabled", true);
         }
-        else if (!validateCompleteBy(completeByDate)) {
+        else if (!completeByDate) {
             showError(inputCompleteByDate, "Complete by date is required.");
             addButton.prop("disabled", true);
         } else {
             hideError(inputCompleteByDate);
-             addButton.prop("disabled", false);
+            addButton.prop("disabled", false);
         }
     });
 
@@ -308,7 +273,7 @@ $(document).ready(function () {
                 editingMode = "add";
                 addButton.val("Add Task");
             } else {
-                const newTask= new Task(title.trim(),description.trim(),completeByDate);
+                const newTask = new Task(title.trim(), description.trim(), completeByDate);
                 tasks.push(newTask);
                 addTaskToDOM(newTask);
             }
@@ -323,7 +288,7 @@ $(document).ready(function () {
             if (!validateDescription(description)) {
                 showError(inputDescription, "Description should not exceed 200 characters.");
             }
-            if (!validateCompleteBy(completeByDate)) {
+            if (!completeByDate) {
                 showError(inputCompleteByDate, "Complete by date is required.");
             }
             addButton.prop("disabled", true);
