@@ -23,13 +23,9 @@ body {
 }
 
 header {
-  text-align: center;
-  padding: 0rem 1rem;
-  padding-top: 1rem;
+  padding: 1rem;
   max-width: 500px;
   width: 100%;
-  margin: 0 auto;
-  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -52,23 +48,14 @@ header {
   text-align: center;
   line-height: 50px;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 .add-task-icon:hover {
   background-color: var(--button-hover);
-  color: var(--light);
 }
 
-.add-task-icon {
-  margin-left: 10px;
-}
-
-.header-content h2 {
-  margin-top: 0;
-}
-
-input,
-button {
+input,button {
   appearance: none;
   border: none;
   outline: none;
