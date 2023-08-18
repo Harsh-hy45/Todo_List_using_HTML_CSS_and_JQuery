@@ -166,6 +166,20 @@ Date.prototype.yyyymmdd = function () {
     return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
 }
 
+function renderTasks() {
+    taskList.empty();
+    tasks.sort((a, b) => {
+        if (a.completed === b.completed) {
+            return new Date(a.completeByDate) - new Date(b.completeByDate);
+        }
+        return a.completed ? 1 : -1;
+    });
+
+    for (const task of tasks) {
+        addTaskToDOM(task);
+    }
+}
+
 $(document).ready(function () {
     tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     if (!Array.isArray(tasks)) {
@@ -201,9 +215,10 @@ $(document).ready(function () {
             editButton.show();
             completedOnInput.val("In Progress...");
         }
-        
+
         updateTask(taskIndex, tasks[taskIndex].title, tasks[taskIndex].description, tasks[taskIndex].completeByDate, completed);
         updateLocalStorageTasks();
+        renderTasks();
     });
 
     $("#reset-form").click(function () {
@@ -281,6 +296,7 @@ $(document).ready(function () {
             inputTitle.val("");
             inputDescription.val("");
             inputCompleteByDate.val("");
+            renderTasks();
         } else {
             if (!validateTitle(title)) {
                 showError(inputTitle, "Title should be between 3 and 50 characters.");
@@ -310,7 +326,5 @@ $(document).ready(function () {
         closeDeleteModal();
     });
 
-    for (const task of tasks) {
-        addTaskToDOM(task);
-    }
+    renderTasks();
 });
