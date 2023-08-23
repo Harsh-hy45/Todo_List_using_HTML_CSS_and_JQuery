@@ -56,6 +56,11 @@ h1 {
     min-height: 50px; 
     word-wrap: break-word;
 }
+.description {
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100px;
+}
 
 a {
     display: block;

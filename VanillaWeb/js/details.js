@@ -10,7 +10,8 @@ $(document).ready(function () {
     const taskDetails = getTaskDetailsById(taskId);
     $("#task-title").text(taskDetails.title);
     $("#task-description").text(taskDetails.description);
-    $("#complete-by-date").text(taskDetails.completeByDate);
+    $("#complete-by-date").text(new Date(taskDetails.completeByDate).toDateString());
+
     const createdOnDate = new Date(taskDetails.createdOn);
     const createdDate = createdOnDate.toDateString();
     const createdTime = createdOnDate.toLocaleTimeString();

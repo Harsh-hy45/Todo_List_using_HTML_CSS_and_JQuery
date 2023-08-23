@@ -8,6 +8,7 @@ const openModelButton = $("#open-modal-button");
 const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
 const searchBar = $("#search-bar");
+const taskModal= $("#task-modal");
 let currentDate = new Date();
 let tasks;
 let taskToDeleteIndex;
@@ -30,16 +31,15 @@ class Task {
 
 function openDeleteModal(index) {
     taskToDeleteIndex = index;
-    deleteModal.css("display", "block");
+    deleteModal.show();
 }
 
 function closeDeleteModal() {
-    deleteModal.css("display", "none");
+    deleteModal.hide();
 }
 
 function viewTask(index) {
-    const taskDetailsUrl = `details.html?id=${index}`;
-    window.location.href = taskDetailsUrl;
+    window.location.href = `details.html?id=${index}`;
 }
 
 function getDate(rawDate) {
@@ -49,7 +49,7 @@ function getDate(rawDate) {
 function addTaskToDOM(task) {
     const taskRow = $(`
     <tr class="task">
-      <td class="status">
+      <td>
         <label class="checkbox-container">
            <input class="complete-checkbox" type="checkbox" ${task.completed ? "checked" : ""}>
            <span class="checkmark"><el>
@@ -57,16 +57,16 @@ function addTaskToDOM(task) {
       <td class="content">
           <input class="task-title" type="text" value="${task.title}" readonly>
       </td>
-      <td class="completeby">
+      <td>
           <input class="task-completeby" type="text" value="${getDate(task.completeByDate)}" readonly>
       </td>
-      <td class="completedon">
+      <td>
           <input class="task-completedon" type="text" value="${task.completed ? getDate(task.completedOn) : 'In Progress...'}" readonly>
       </td>
       <td class="actions">
         <button class="view">View</button>
         ${task.completed ? '' : '<button class="edit">Edit</button>'}
-        <button class="delete"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
+        <button class="delete-btn"><i class="fa fa-trash" aria-hidden="true" class="delete-icon"></i></button>
       </td>
     </tr>
   `);
@@ -74,10 +74,11 @@ function addTaskToDOM(task) {
     taskList.append(taskRow);
     const taskViewButton = $(".view");
     const taskEditButton = $(".edit");
-    const taskDeleteButton = $("#task-table tbody tr:last-child .delete");
+    const taskDeleteButton = $("#task-table tbody tr:last-child .delete-btn");
 
     taskViewButton.click(function () {
         const taskIndex = $(this).closest(".task").index();
+        console.log(taskIndex);
         viewTask(taskIndex);
     });
 
@@ -92,7 +93,7 @@ function addTaskToDOM(task) {
         form.data("edit-index", taskIndex);
         editingMode = "edit";
         addButton.val(saveTask);
-        $("#task-modal").css("display", "block");
+        taskModal.show();
     });
 
     taskDeleteButton.click(function () {
@@ -144,7 +145,7 @@ function resetFormErrors() {
 
 function closeModal() {
     form.trigger("reset");
-    $("#task-modal").css("display", "none");
+    taskModal.hide();
 }
 
 function showError(inputElement, message) {
@@ -167,6 +168,7 @@ Date.prototype.yyyymmdd = function () {
 }
 
 function renderTasks() {
+    console.log("This has been called!!");
     taskList.empty();
     tasks.sort((a, b) => {
         if (a.completed === b.completed) {
@@ -174,7 +176,7 @@ function renderTasks() {
         }
         return a.completed ? 1 : -1;
     });
-
+     updateLocalStorageTasks();
     for (const task of tasks) {
         addTaskToDOM(task);
     }
@@ -192,13 +194,13 @@ $(document).ready(function () {
         editingMode = "add";
         addButton.prop("disabled", true);
         addButton.val(addTask);
-        $("#task-modal").css("display", "block");
+        taskModal.show();
     });
 
     closeModelButton.click(function () {
         form.trigger("reset");
         editingMode = "add";
-        $("#task-modal").css("display", "none");
+        taskModal.hide();
     });
 
     taskList.on("change", ".complete-checkbox", function () {
@@ -222,6 +224,7 @@ $(document).ready(function () {
     });
 
     $("#reset-form").click(function () {
+        addButton.prop("disabled",true);
         form.trigger("reset");
     });
 
@@ -232,6 +235,10 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputTitle);
+            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
+            {
+                addButton.prop("disabled",false);
+            }
         }
     });
 
@@ -242,7 +249,10 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputDescription);
-            addButton.prop("disabled", false);
+            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
+            {
+                addButton.prop("disabled",false);
+            }
         }
     });
 
@@ -258,7 +268,10 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputCompleteByDate);
-            addButton.prop("disabled", false);
+            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
+            {
+                addButton.prop("disabled",false);
+            }
         }
     });
 
@@ -287,16 +300,18 @@ $(document).ready(function () {
                 form.data("edit-index", undefined);
                 editingMode = "add";
                 addButton.val("Add Task");
+                renderTasks();
             } else {
                 const newTask = new Task(title.trim(), description.trim(), completeByDate);
                 tasks.push(newTask);
                 addTaskToDOM(newTask);
+                renderTasks();
             }
             updateLocalStorageTasks();
             inputTitle.val("");
             inputDescription.val("");
             inputCompleteByDate.val("");
-            renderTasks();
+            
         } else {
             if (!validateTitle(title)) {
                 showError(inputTitle, "Title should be between 3 and 50 characters.");
@@ -312,7 +327,7 @@ $(document).ready(function () {
     });
 
     addButton.click(function () {
-        $("#task-modal").css("display", "none");
+        taskModal.show();
     });
 
     $("#confirm-delete").click(function () {
