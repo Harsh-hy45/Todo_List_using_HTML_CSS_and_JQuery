@@ -8,7 +8,7 @@ const openModelButton = $("#open-modal-button");
 const closeModelButton = $("#close-modal-button");
 const deleteModal = $("#delete-modal");
 const searchBar = $("#search-bar");
-const taskModal= $("#task-modal");
+const taskModal = $("#task-modal");
 let currentDate = new Date();
 let tasks;
 let taskToDeleteIndex;
@@ -122,6 +122,7 @@ function updateTask(index, title, description, completeByDate, completed) {
 }
 
 function updateLocalStorageTasks() {
+    sortTasks();
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -167,16 +168,20 @@ Date.prototype.yyyymmdd = function () {
     return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
 }
 
-function renderTasks() {
-    console.log("This has been called!!");
-    taskList.empty();
+function sortTasks(){
     tasks.sort((a, b) => {
         if (a.completed === b.completed) {
             return new Date(a.completeByDate) - new Date(b.completeByDate);
         }
         return a.completed ? 1 : -1;
     });
-     updateLocalStorageTasks();
+}
+
+function renderTasks() {
+    console.log("This has been called!!");
+    taskList.empty();
+    sortTasks();
+    updateLocalStorageTasks();
     for (const task of tasks) {
         addTaskToDOM(task);
     }
@@ -224,7 +229,7 @@ $(document).ready(function () {
     });
 
     $("#reset-form").click(function () {
-        addButton.prop("disabled",true);
+        addButton.prop("disabled", true);
         form.trigger("reset");
     });
 
@@ -235,9 +240,8 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputTitle);
-            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
-            {
-                addButton.prop("disabled",false);
+            if (validateForm(inputTitle.val().trim(), inputDescription.val().trim(), inputCompleteByDate.val())) {
+                addButton.prop("disabled", false);
             }
         }
     });
@@ -249,9 +253,8 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputDescription);
-            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
-            {
-                addButton.prop("disabled",false);
+            if (validateForm(inputTitle.val().trim(), inputDescription.val().trim(), inputCompleteByDate.val())) {
+                addButton.prop("disabled", false);
             }
         }
     });
@@ -268,9 +271,8 @@ $(document).ready(function () {
             addButton.prop("disabled", true);
         } else {
             hideError(inputCompleteByDate);
-            if(validateForm(inputTitle.val().trim(),inputDescription.val().trim(),inputCompleteByDate.val()))
-            {
-                addButton.prop("disabled",false);
+            if (validateForm(inputTitle.val().trim(), inputDescription.val().trim(), inputCompleteByDate.val())) {
+                addButton.prop("disabled", false);
             }
         }
     });
@@ -311,7 +313,7 @@ $(document).ready(function () {
             inputTitle.val("");
             inputDescription.val("");
             inputCompleteByDate.val("");
-            
+
         } else {
             if (!validateTitle(title)) {
                 showError(inputTitle, "Title should be between 3 and 50 characters.");
